@@ -8,16 +8,12 @@ public class Calc {
         // 단일항이 입력되면 바로 리턴
         if (!exp.contains(" ")) return Integer.parseInt(exp);
 
-        boolean hasBracket = exp.contains("(") && exp.contains(")");
+        exp = stripOuterBrackets(exp);
+
         boolean needToMulti = exp.contains(" * ");
         boolean needToPlus = exp.contains(" + ") || exp.contains(" - ");
 
         boolean needToCompound = needToMulti && needToPlus;
-
-
-        if (hasBracket) {
-            exp = exp.replaceAll("\\(", "").replaceAll("\\)", "");
-        }
 
         if (needToCompound) {
             String[] bits = exp.split(" \\+ ");
@@ -54,5 +50,12 @@ public class Calc {
 
 
         throw new RuntimeException("올바른 계산식이 아닙니다.");
+    }
+
+    private static String stripOuterBrackets(String exp) {
+        while (exp.charAt(0) == '(' && exp.charAt(exp.length() - 1) == ')') {
+            exp = exp.substring(1, exp.length() - 1);
+        }
+        return exp;
     }
 }
